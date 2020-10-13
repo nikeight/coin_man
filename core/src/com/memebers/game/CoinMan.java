@@ -15,6 +15,8 @@ import java.util.Random;
 
 public class CoinMan extends ApplicationAdapter {
 	SpriteBatch batch;
+
+	// Init.
 	Texture background;
 	Texture[] man;
 	int manState =0;
@@ -25,12 +27,14 @@ public class CoinMan extends ApplicationAdapter {
 	Random random;
 	Rectangle manRectangle;
 
+	// For Coins
 	ArrayList<Integer> coinXs = new ArrayList<>();
 	ArrayList<Integer> coinYs = new ArrayList<>();
 	ArrayList<Rectangle> coinRectangles = new ArrayList<>();
 	Texture coin;
 	int coinCount;
 
+	// For Bombs
 	ArrayList<Integer> bombXs = new ArrayList<>();
 	ArrayList<Integer> bombYs = new ArrayList<>();
 	ArrayList<Rectangle> bombRectangles = new ArrayList<>();
@@ -46,6 +50,8 @@ public class CoinMan extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		// Setting Images
 		background= new Texture("bg.png");
 		man = new Texture[4];
 		man[0]= new Texture("frame-1.png");
@@ -67,12 +73,14 @@ public class CoinMan extends ApplicationAdapter {
 	}
 
 	public void makeCoin(){
+		// To get Random Coins
 		float height = random.nextFloat() * Gdx.graphics.getHeight();
 		coinYs.add((int) height);
 		coinXs.add(Gdx.graphics.getWidth());
 	}
 
 	public void makeBomb(){
+		// To get Random Bombs.
 		float height = random.nextFloat() * Gdx.graphics.getHeight();
 		bombYs.add((int) height);
 		bombXs.add(Gdx.graphics.getWidth());
@@ -81,7 +89,9 @@ public class CoinMan extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		// This function call itself again and again.
 		batch.begin();
+
 		batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 		if (gameState == 1){
@@ -90,7 +100,8 @@ public class CoinMan extends ApplicationAdapter {
 			// For Bomb appearance at random positions.
 			if (bombCount < 250){
 				bombCount++;
-			}else{
+			}
+			else{
 				bombCount=0;
 				makeBomb();
 			}
@@ -142,7 +153,6 @@ public class CoinMan extends ApplicationAdapter {
 		}
 		else
 			if (gameState == 0){
-
 				// Waiting to Start
 				if (Gdx.input.justTouched()){
 					gameState=1;
@@ -155,7 +165,8 @@ public class CoinMan extends ApplicationAdapter {
 					if (Gdx.input.justTouched()){
 						gameState=1;
 					}
-					manY=Gdx.graphics.getHeight() / 2;
+					// Stop the Game.
+					manY= Gdx.graphics.getHeight() / 2;
 					score=0;
 					velocity=0;
 					coinYs.clear();
@@ -169,6 +180,7 @@ public class CoinMan extends ApplicationAdapter {
 
 				}
 		if (gameState==2){
+			// Change the images resources.
 			batch.draw(dizzyface,Gdx.graphics.getWidth()/2 - man[manState].getWidth()/2,manY);
 		}else {
 			batch.draw(man[manState], Gdx.graphics.getWidth() / 2 - man[manState].getWidth() / 2, manY);
@@ -177,6 +189,7 @@ public class CoinMan extends ApplicationAdapter {
 		manRectangle= new Rectangle(Gdx.graphics.getWidth()/2 - man[manState].getWidth()/2,manY,man[manState].getWidth(),man[manState].getHeight());
 
 		for (int i=0; i < coinRectangles.size(); i++){
+			// Increment score, if man collide with coins.
 			if (Intersector.overlaps(manRectangle,coinRectangles.get(i))){
 				Gdx.app.log("Coins","Collision");
 				score++;
@@ -189,6 +202,8 @@ public class CoinMan extends ApplicationAdapter {
 		}
 
 		for (int i=0; i < bombRectangles.size(); i++){
+			// Increment score, if man collide with Bombs.
+
 			if (Intersector.overlaps(manRectangle,bombRectangles.get(i))){
 				Gdx.app.log("Bomb","Collision");
 				gameState = 2;
