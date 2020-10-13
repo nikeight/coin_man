@@ -12,10 +12,13 @@ You can contribute to this repo by:
 3. Submit your pull request. 🚀
 
 ### Preview 
+<p align="center">
+  <img src="Screenshots/Screenshot_1602499151.png" width="50%" >
+</p>
 
-![Screenshot1](Screenshots/Screenshot_1602499151.png).
-![Screenshot1](Screenshots/Screenshot_1602499132.png).
-
+<p align="center">
+  <img src="Screenshots/Screenshot_1602499132.png" width="50%" >
+</p>
 
 ### Upcoming features-
 
